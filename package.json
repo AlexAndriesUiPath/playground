@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "serve:playground": "nx serve playground",
     "test:jest": "nx run jest-test:test",
-    "test:karma": "nx run karma-test:test"
+    "test:karma": "nx run karma-test:test",
+    "graph": "nx graph"
   },
   "private": true,
   "dependencies": {
