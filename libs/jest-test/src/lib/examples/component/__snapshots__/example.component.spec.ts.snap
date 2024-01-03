@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component(Jest): ExampleComponent should call updateStream method 1`] = `
+<ui-example
+  data$={[Function Observable]}
+  service={[Function Object]}
+>
+  <span>
+    new Data
+  </span><ui-child /><button>
+    Set 'fromClick'
+  </button>
+</ui-example>
+`;
+
+exports[`Component(Jest): ExampleComponent should match snapshot with initial state 1`] = `
+<ui-example
+  data$={[Function Observable]}
+  service={[Function Object]}
+>
+  <span>
+    new stream
+  </span><ui-child /><button>
+    Set 'fromClick'
+  </button>
+</ui-example>
+`;
+
+exports[`Component(Jest): ExampleComponent should set the \`fromClick\` value in stream 1`] = `
+<ui-example
+  data$={[Function Observable]}
+  service={[Function Object]}
+>
+  <span>
+    fromClick
+  </span><ui-child /><button>
+    Set 'fromClick'
+  </button>
+</ui-example>
+`;

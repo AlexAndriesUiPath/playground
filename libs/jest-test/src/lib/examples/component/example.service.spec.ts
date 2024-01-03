@@ -1,19 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-import { UnitTestsModule } from '@playground/unit-tests';
+import { JestTestModule } from '@playground/jest-test';
 import { ExampleService } from './example.service';
-import DoneCallback = jest.DoneCallback;
 
-describe('Service: ExampleService', () => {
+describe('Service(Jest): ExampleService', () => {
   let service: ExampleService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ExampleService],
-      imports: [UnitTestsModule]
+      imports: [JestTestModule]
     });
   });
 
-  it('should update data$ based on stream', (done: DoneCallback) => {
+  it('should update data$ based on stream', (done: jest.DoneCallback) => {
     service = TestBed.inject(ExampleService);
     const streamValue = 'new stream';
     service.data$.subscribe((data) => {

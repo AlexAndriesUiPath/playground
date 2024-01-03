@@ -7,6 +7,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { defer } from 'rxjs';
+import { ChildComponent } from './child.component';
 import { ExampleService } from './example.service';
 
 @Component({
@@ -16,11 +17,12 @@ import { ExampleService } from './example.service';
     <ng-container *ngIf="data$ | async as data">
       <span>{{ data.stream }}</span>
     </ng-container>
+    <ui-child></ui-child>
     <button (click)="updateStreamHandler('fromClick')">Set 'fromClick'</button>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [CommonModule],
+  imports: [CommonModule, ChildComponent],
   providers: [ExampleService],
 })
 export class ExampleComponent implements OnInit {
