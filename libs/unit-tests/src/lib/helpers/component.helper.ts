@@ -8,13 +8,40 @@ import {
   TestBed
 } from '@angular/core/testing';
 import {
-  MockedComponentFixture
+  MockedComponentFixture,
+  MockRender
 } from 'ng-mocks';
 
 export abstract class PageHelper<T> {
   constructor(
-    protected fixture: ComponentFixture<T> | MockedComponentFixture<T>,
+    protected fixture: ComponentFixture<T> | MockedComponentFixture<T>
   ) {}
+
+  protected componentQuery<C>(predicate: Predicate<DebugElement>, debugElement?: DebugElement): C | undefined {
+    return this.query(predicate, debugElement)?.componentInstance;
+  }
+
+  protected componentQueryAll<C>(predicate: Predicate<DebugElement>, debugElement?: DebugElement): C[] | undefined {
+    return this.queryAll(predicate, debugElement)?.map(item => item.componentInstance as C);
+  }
+
+  protected elementQuery<E extends HTMLElement = HTMLElement>(
+    predicate: string,
+    debugElement: DebugElement | E = this.fixture.nativeElement
+  ): E {
+    const nativeElement = debugElement instanceof DebugElement ? debugElement.nativeElement : debugElement;
+
+    return nativeElement.querySelector(predicate);
+  }
+
+  protected elementQueryAll<E extends HTMLElement = HTMLElement>(
+    predicate: string,
+    debugElement: DebugElement | E = this.fixture.nativeElement
+  ): E[] {
+    const nativeElement = debugElement instanceof DebugElement ? debugElement.nativeElement : debugElement;
+
+    return Array.from(nativeElement.querySelectorAll(predicate));
+  }
 
   protected inject(name: Type<T>): T {
     return this.fixture.debugElement.injector.get(name);
@@ -27,37 +54,34 @@ export abstract class PageHelper<T> {
   protected queryAll(predicate: Predicate<DebugElement>, debugElement?: DebugElement): DebugElement[] {
     return (debugElement ?? this.fixture.debugElement).queryAll(predicate);
   }
+}
 
-  protected componentQuery<C>(predicate: Predicate<DebugElement>, debugElement?: DebugElement): C | undefined {
-    return this.query(predicate, debugElement)?.componentInstance;
+export function mockRenderComponent<C, P extends PageHelper<C> | undefined = undefined>(
+  componentType: Type<C>,
+  pageHelper?: Type<P>
+): {
+  fixture: ComponentFixture<C>;
+  component: C;
+  page: P extends PageHelper<C> ? P : undefined
+} {
+  const fixture = MockRender(componentType);
+
+  let page;
+
+  if (typeof pageHelper !== 'undefined') {
+    page = new pageHelper(fixture) as any;
   }
 
-  protected componentQueryAll<C>(predicate: Predicate<DebugElement>, debugElement?: DebugElement): C[] | undefined {
-    return this.queryAll(predicate, debugElement)?.map(item => item.componentInstance as C);
-  }
-
-  protected elementQuery<E extends HTMLElement = HTMLElement>(
-    predicate: string,
-    debugElement: DebugElement | E = this.fixture.nativeElement,
-  ): E {
-    const nativeElement = debugElement instanceof DebugElement ? debugElement.nativeElement : debugElement;
-
-    return nativeElement.querySelector(predicate);
-  }
-
-  protected elementQueryAll<E extends HTMLElement = HTMLElement>(
-    predicate: string,
-    debugElement: DebugElement | E = this.fixture.nativeElement,
-  ): E[] {
-    const nativeElement = debugElement instanceof DebugElement ? debugElement.nativeElement : debugElement;
-
-    return Array.from(nativeElement.querySelectorAll(predicate));
-  }
+  return {
+    fixture,
+    component: fixture.componentInstance,
+    page
+  };
 }
 
 export function createComponent<C, P extends PageHelper<C> | undefined = undefined>(
   componentType: Type<C>,
-  pageHelper?: Type<P>,
+  pageHelper?: Type<P>
 ): {
   fixture: ComponentFixture<C>;
   component: C;
@@ -73,6 +97,6 @@ export function createComponent<C, P extends PageHelper<C> | undefined = undefin
   return {
     fixture,
     component: fixture.componentInstance,
-    page,
-  }
+    page
+  };
 }

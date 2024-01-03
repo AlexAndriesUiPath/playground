@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { defer } from 'rxjs';
 import { ChildComponent } from './child.component';
 import { ExampleService } from './example.service';
@@ -15,14 +16,15 @@ import { ExampleService } from './example.service';
   selector: 'ui-example',
   template: `
     <ng-container *ngIf="data$ | async as data">
-      <span>{{ data.stream }}</span>
+      <span>{{ data.stream | translate }}</span>
     </ng-container>
     <ui-child></ui-child>
+    <img src="#" alt="alternate text"/>
     <button (click)="updateStreamHandler('fromClick')">Set 'fromClick'</button>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [CommonModule, ChildComponent],
+  imports: [CommonModule, ChildComponent, TranslateModule],
   providers: [ExampleService],
 })
 export class ExampleComponent implements OnInit {

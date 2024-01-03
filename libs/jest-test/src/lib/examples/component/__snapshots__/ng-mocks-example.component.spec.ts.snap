@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component(NgMock): ExampleComponent should call updateStream method 1`] = `
+<mock-render>
+  <ui-example>
+    <span>
+      new Data
+    </span>
+    <ui-child />
+    <img
+      alt="alternate text"
+      src="#"
+    />
+    <button>
+      Set 'fromClick'
+    </button>
+  </ui-example>
+</mock-render>
+`;
+
+exports[`Component(NgMock): ExampleComponent should match snapshot with initial state 1`] = `
+<mock-render>
+  <ui-example>
+    <span>
+      new stream
+    </span>
+    <ui-child />
+    <img
+      alt="alternate text"
+      src="#"
+    />
+    <button>
+      Set 'fromClick'
+    </button>
+  </ui-example>
+</mock-render>
+`;
+
+exports[`Component(NgMock): ExampleComponent should set the \`fromClick\` value in stream 1`] = `
+<mock-render>
+  <ui-example>
+    <span>
+      fromClick
+    </span>
+    <ui-child />
+    <img
+      alt="alternate text"
+      src="#"
+    />
+    <button>
+      Set 'fromClick'
+    </button>
+  </ui-example>
+</mock-render>
+`;

@@ -1,17 +1,15 @@
-import { ChangeDetectionStrategy } from '@angular/core';
-import {
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   createMockObject,
   JestTestModule
 } from '@playground/jest-test';
 import {
-  createComponent,
+  itShouldBeWCAGCompliance,
+  mockRenderComponent,
   PageHelper
 } from '@playground/unit-tests';
-import { MockComponent } from 'ng-mocks';
+import { MockBuilder } from 'ng-mocks';
 import { BehaviorSubject } from 'rxjs';
 import { ChildComponent } from './child.component';
 import { ExampleComponent } from './example.component';
@@ -27,7 +25,7 @@ class ExampleComponentPage extends PageHelper<ExampleComponent> {
   }
 }
 
-describe('Component(Jest): ExampleComponent', () => {
+describe('Component(NgMock): ExampleComponent', () => {
   let fixture: ComponentFixture<ExampleComponent>;
   let component: ExampleComponent;
   let page: ExampleComponentPage;
@@ -40,26 +38,19 @@ describe('Component(Jest): ExampleComponent', () => {
     service.data$ = dataStream.asObservable();
     service.updateStream = jest.fn((stream) => dataStream.next({ stream }));
 
-    TestBed.configureTestingModule({
-      imports: [ExampleComponent]
-    }).overrideComponent(ExampleComponent, {
-      set: {
-        changeDetection: ChangeDetectionStrategy.Default,
-        imports: [
-          JestTestModule,
-          MockComponent(ChildComponent)
-        ],
-        providers: [{
-          provide: ExampleService,
-          useFactory: () => service
-        }]
-      }
-    });
+    return MockBuilder(ExampleComponent)
+      .mock(ChildComponent)
+      .mock(ExampleService, service)
+      .replace(TranslateModule, JestTestModule);
   });
 
   beforeEach(() => {
-    ({ component, fixture, page } = createComponent(ExampleComponent, ExampleComponentPage));
+    ({ component, fixture, page } = mockRenderComponent(ExampleComponent, ExampleComponentPage));
     fixture.detectChanges();
+  });
+
+  it('should be compliance', async () => {
+    await itShouldBeWCAGCompliance(fixture.nativeElement);
   });
 
   it('should match snapshot with initial state', () => {
@@ -82,7 +73,7 @@ describe('Component(Jest): ExampleComponent', () => {
 
     fixture.detectChanges();
 
-    expect(page.streamLabel.innerHTML).toBe('fromClick');
+    expect(page.streamLabel?.innerHTML).toBe('fromClick');
     expect(fixture).toMatchSnapshot();
   });
 });

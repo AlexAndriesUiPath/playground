@@ -7,7 +7,10 @@ exports[`Component(Jest): ExampleComponent should call updateStream method 1`] =
 >
   <span>
     new Data
-  </span><ui-child /><button>
+  </span><ui-child /><img
+    alt="alternate text"
+    src="#"
+  /><button>
     Set 'fromClick'
   </button>
 </ui-example>
@@ -20,7 +23,10 @@ exports[`Component(Jest): ExampleComponent should match snapshot with initial st
 >
   <span>
     new stream
-  </span><ui-child /><button>
+  </span><ui-child /><img
+    alt="alternate text"
+    src="#"
+  /><button>
     Set 'fromClick'
   </button>
 </ui-example>
@@ -33,7 +39,10 @@ exports[`Component(Jest): ExampleComponent should set the \`fromClick\` value in
 >
   <span>
     fromClick
-  </span><ui-child /><button>
+  </span><ui-child /><img
+    alt="alternate text"
+    src="#"
+  /><button>
     Set 'fromClick'
   </button>
 </ui-example>

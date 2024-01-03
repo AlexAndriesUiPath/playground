@@ -5,8 +5,7 @@ import {
 } from '@angular/core/testing';
 import {
   createMockObject,
-  KarmaTestModule,
-  provideMockedObject
+  KarmaTestModule
 } from '@playground/karma-test';
 import {
   createComponent,
@@ -23,12 +22,12 @@ class ExampleComponentPage extends PageHelper<ExampleComponent> {
     return this.elementQuery('button');
   }
 
-  get streamLabel(): HTMLElement {
-    return this.elementQuery('span');
-  }
-
   get childComponent(): HTMLElement {
     return this.elementQuery('ui-child');
+  }
+
+  get streamLabel(): HTMLElement {
+    return this.elementQuery('span');
   }
 }
 
@@ -43,18 +42,23 @@ describe('Component(Karma): ExampleComponent', () => {
     dataStream = new BehaviorSubject<{ stream: string }>({ stream: '' });
     service = createMockObject(ExampleService);
     service.data$ = dataStream.asObservable();
-    service.updateStream = jasmine.createSpy('updateStream').and.callFake((stream) => dataStream.next({ stream }));
+    service.updateStream = jasmine.createSpy('updateStream').and.callFake((stream: string) => dataStream.next({ stream }));
 
     TestBed.configureTestingModule({
-      imports: [ExampleComponent, KarmaTestModule, MockComponent(ChildComponent)],
+      imports: [ExampleComponent]
     }).overrideComponent(ExampleComponent, {
-             set: {
-               changeDetection: ChangeDetectionStrategy.Default
-             }
-           })
-           .overrideProvider(ExampleService, {
-             useFactory: () => service
-           });
+      set: {
+        changeDetection: ChangeDetectionStrategy.Default,
+        imports: [
+          KarmaTestModule,
+          MockComponent(ChildComponent)
+        ],
+        providers: [{
+          provide: ExampleService,
+          useFactory: () => service
+        }]
+      }
+    });
   });
 
   beforeEach(() => {
@@ -81,6 +85,6 @@ describe('Component(Karma): ExampleComponent', () => {
   });
 
   it('should have the child component rendered', () => {
-    expect(page.childComponent.innerHTML).toBe('')
-  })
+    expect(page.childComponent.innerHTML).toBe('');
+  });
 });
