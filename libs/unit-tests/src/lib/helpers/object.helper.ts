@@ -2,16 +2,17 @@ import {
   Provider,
   Type
 } from '@angular/core';
+import { Tool } from '../tool.model';
 
 type FunctionPropertyNames<T> = {
   [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;
 }[keyof T] & string;
 
-export function spyOnObject<O extends object>(target: O, methods?: string[]) {
+export function baseSpyOnObject<O extends object>(tool: Tool, target: O, methods?: string[]) {
   if (Array.isArray(methods)) {
     return methods.reduce((acc, method) => ({
       ...acc,
-      [method]: jest.spyOn(target, method as FunctionPropertyNames<Required<O>>)
+      [method]: tool.spyOn(target, method as FunctionPropertyNames<Required<O>>)
     }), {});
   }
 
@@ -22,25 +23,25 @@ export function spyOnObject<O extends object>(target: O, methods?: string[]) {
 
     return {
       ...acc,
-      [property]: jest.spyOn(target, property as FunctionPropertyNames<Required<O>>)
+      [property]: tool.spyOn(target, property as FunctionPropertyNames<Required<O>>)
     };
   }, {});
 }
 
-export function spyOnFunctions(functions: Function[]) {
+export function baseSpyOnFunctions(tool: Tool, functions: Function[]) {
   const object = functions.reduce((acc, func) => ({
     ...acc,
-    [func.name]: func,
+    [func.name]: func
   }), {});
 
-  return spyOnObject(object);
+  return baseSpyOnObject(tool, object);
 }
 
 interface PropSpies {
-  [key: string]: jest.SpyInstance<any, []>;
+  [key: string]: any;
 }
 
-export function createMockObject<O>(type: Type<O>): jest.Mocked<O> {
+export function baseCreateMockObject<O>(tool: Tool, type: Type<O>): any {
   const target: any = {};
 
   target.propSpies = {} as PropSpies;
@@ -58,13 +59,13 @@ export function createMockObject<O>(type: Type<O>): jest.Mocked<O> {
       const descriptor = Object.getOwnPropertyDescriptor(proto, key);
 
       if (typeof descriptor?.value === 'function') {
-        target[key] = jest.fn();
+        target[key] = tool.fn();
         continue;
       }
 
       if (typeof descriptor?.get === 'function') {
         Object.defineProperty(target, key, descriptor);
-        target.propSpies[key] = jest.spyOn(target, key, 'get');
+        target.propSpies[key] = tool.spyOn(target, key, 'get');
       }
     }
 
@@ -76,9 +77,9 @@ export function createMockObject<O>(type: Type<O>): jest.Mocked<O> {
   return target;
 }
 
-export function provideMockedObject<O>(type: Type<O>): Provider {
+export function baseProvideMockedObject<O>(tool: Tool, type: Type<O>): Provider {
   return {
     provide: type,
-    useFactory: () => createMockObject<O>(type)
+    useFactory: () => baseCreateMockObject<O>(tool, type)
   };
 }

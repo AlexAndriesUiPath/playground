@@ -15,6 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@playground/jest-test": ["libs/jest-test/src/index.ts"],
+      "@playground/karma-test": ["libs/karma-test/src/index.ts"],
       "@playground/unit-tests": ["libs/unit-tests/src/index.ts"]
     }
   },

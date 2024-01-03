@@ -11,10 +11,10 @@ export function expectRequestParams(request: HttpRequest<any>, params: Params): 
 
   keys.forEach((key) => {
     if (Array.isArray(params[key])) {
-      expect(request.params.getAll(key)).toEqual(params[key]);
+      expect(request.params.getAll(key)).toEqual(params[key] as any);
       return;
     }
 
-    expect(request.params.get(key)).toEqual(params[key]);
+    expect(request.params.get(key)).toEqual(params[key] as any);
   });
 }

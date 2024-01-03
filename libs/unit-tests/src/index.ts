@@ -4,3 +4,4 @@ export * from './lib/pipes/translate.pipe.mock';
 export * from './lib/helpers/component.helper';
 export * from './lib/helpers/object.helper';
 export * from './lib/helpers/request.helper';
+export * from './lib/tool.model';
