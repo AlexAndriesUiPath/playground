@@ -1,18 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-import { KarmaTestModule } from '@playground/karma-test';
-import { ExampleService } from './example.service';
+import { ExampleService } from '@playground/examples';
+import { JestTestModule } from '@playground/jest-test';
 
-describe('Service(Karma): ExampleService', () => {
+describe('Service(Jest): ExampleService', () => {
   let service: ExampleService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ExampleService],
-      imports: [KarmaTestModule]
+      imports: [JestTestModule]
     });
   });
 
-  it('should update data$ based on stream', (done) => {
+  it('should update data$ based on stream', (done: jest.DoneCallback) => {
     service = TestBed.inject(ExampleService);
     const streamValue = 'new stream';
     service.data$.subscribe((data) => {

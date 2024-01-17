@@ -4,8 +4,15 @@ import {
   TestBed
 } from '@angular/core/testing';
 import {
+  ChildComponent,
+  ExampleComponent,
+  ExampleService,
+  RootService
+} from '@playground/examples';
+import {
   createMockObject,
-  KarmaTestModule
+  KarmaTestModule,
+  provideMockedObject
 } from '@playground/karma-test';
 import {
   createComponent,
@@ -13,9 +20,6 @@ import {
 } from '@playground/unit-tests';
 import { MockComponent } from 'ng-mocks';
 import { BehaviorSubject } from 'rxjs';
-import { ChildComponent } from './child.component';
-import { ExampleComponent } from './example.component';
-import { ExampleService } from './example.service';
 
 class ExampleComponentPage extends PageHelper<ExampleComponent> {
   get button(): HTMLElement {
@@ -37,6 +41,7 @@ describe('Component(Karma): ExampleComponent', () => {
   let page: ExampleComponentPage;
   let service: any;
   let dataStream: BehaviorSubject<{ stream: string }>;
+  let root: jest.Mocked<RootService>;
 
   beforeEach(() => {
     dataStream = new BehaviorSubject<{ stream: string }>({ stream: '' });
@@ -45,7 +50,10 @@ describe('Component(Karma): ExampleComponent', () => {
     service.updateStream = jasmine.createSpy('updateStream').and.callFake((stream: string) => dataStream.next({ stream }));
 
     TestBed.configureTestingModule({
-      imports: [ExampleComponent]
+      imports: [ExampleComponent],
+      providers: [
+        provideMockedObject(RootService)
+      ]
     }).overrideComponent(ExampleComponent, {
       set: {
         changeDetection: ChangeDetectionStrategy.Default,
@@ -59,6 +67,8 @@ describe('Component(Karma): ExampleComponent', () => {
         }]
       }
     });
+
+    root = TestBed.inject(RootService) as jest.Mocked<RootService>;
   });
 
   beforeEach(() => {
@@ -74,6 +84,7 @@ describe('Component(Karma): ExampleComponent', () => {
     fixture.detectChanges();
 
     expect(page.streamLabel.innerHTML).toBe('new Data');
+    expect(root.init).toHaveBeenCalledTimes(1);
   });
 
   it('should set the `fromClick` value in stream', () => {

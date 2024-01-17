@@ -2,12 +2,8 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  inject,
-  OnInit,
   ViewEncapsulation
 } from '@angular/core';
-import { defer } from 'rxjs';
-import { ExampleService } from './example.service';
 
 @Component({
   standalone: true,
@@ -17,8 +13,8 @@ import { ExampleService } from './example.service';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [CommonModule],
+  imports: [CommonModule]
 })
-export class ChildComponent{
+export class ChildComponent {
 
 }

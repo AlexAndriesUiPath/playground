@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { defer } from 'rxjs';
 import { ChildComponent } from './child.component';
 import { ExampleService } from './example.service';
+import { RootService } from './root.service';
 
 @Component({
   standalone: true,
@@ -30,9 +31,11 @@ import { ExampleService } from './example.service';
 export class ExampleComponent implements OnInit {
   data$ = defer(() => this.service.data$);
 
-  private service = inject(ExampleService);
+  private readonly service = inject(ExampleService);
+  private readonly root = inject(RootService);
 
   ngOnInit() {
+    this.root.init();
     this.updateStreamHandler('new stream');
   }
 

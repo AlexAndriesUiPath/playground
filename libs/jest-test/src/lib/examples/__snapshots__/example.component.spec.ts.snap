@@ -3,6 +3,7 @@
 exports[`Component(Jest): ExampleComponent should call updateStream method 1`] = `
 <ui-example
   data$={[Function Observable]}
+  root={[Function Object]}
   service={[Function Object]}
 >
   <span>
@@ -19,6 +20,7 @@ exports[`Component(Jest): ExampleComponent should call updateStream method 1`] =
 exports[`Component(Jest): ExampleComponent should match snapshot with initial state 1`] = `
 <ui-example
   data$={[Function Observable]}
+  root={[Function Object]}
   service={[Function Object]}
 >
   <span>
@@ -35,6 +37,7 @@ exports[`Component(Jest): ExampleComponent should match snapshot with initial st
 exports[`Component(Jest): ExampleComponent should set the \`fromClick\` value in stream 1`] = `
 <ui-example
   data$={[Function Observable]}
+  root={[Function Object]}
   service={[Function Object]}
 >
   <span>

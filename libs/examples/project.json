@@ -1,0 +1,17 @@
+{
+  "name": "examples",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/examples/src",
+  "prefix": "playground",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/examples/**/*.ts", "libs/examples/**/*.html"]
+      }
+    }
+  },
+  "tags": []
+}

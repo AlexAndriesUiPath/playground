@@ -62,7 +62,7 @@ export const MockTranslateService = (tool: Tool) => () => ({
     TranslateModule,
     MockTranslatePipe,
     MockRouterLinkDirective
-  ]
+  ],
 })
 export class UnitTestsModule {
   static withTool(tool: Tool): ModuleWithProviders<UnitTestsModule> {
